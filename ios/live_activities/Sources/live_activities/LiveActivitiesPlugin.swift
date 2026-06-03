@@ -335,12 +335,12 @@ public class LiveActivitiesPlugin: NSObject, FlutterPlugin, FlutterStreamHandler
                 }
             }
 
-            let updatedStatus = LiveActivitiesAppAttributes.LiveDeliveryData(
-                appGroupId: appGroupId,
-                isPaused: (data["isPaused"] as? Bool) ?? false
-            )
+            let pausedValue = (data["isPaused"] as? Bool) ?? false
+            NSLog("LA_PAUSE PLUGIN update isPaused=\(pausedValue)")
+            let updatedStatus = LiveActivitiesAppAttributes.LiveDeliveryData(appGroupId: appGroupId, isPaused: pausedValue)
             await activity.update(using: updatedStatus, alertConfiguration: alertConfig?.getAlertConfig())
-            
+            NSLog("LA_PAUSE PLUGIN update DONE")
+
             result(nil)
         }
     }
