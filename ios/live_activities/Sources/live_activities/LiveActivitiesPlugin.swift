@@ -263,7 +263,10 @@ public class LiveActivitiesPlugin: NSObject, FlutterPlugin, FlutterStreamHandler
         } else {
             liveDeliveryAttributes = LiveActivitiesAppAttributes()
         }
-        let initialContentState = LiveActivitiesAppAttributes.LiveDeliveryData(appGroupId: appGroupId)
+        let initialContentState = LiveActivitiesAppAttributes.LiveDeliveryData(
+            appGroupId: appGroupId,
+            isPaused: (data["isPaused"] as? Bool) ?? false
+        )
         var deliveryActivity: Activity<LiveActivitiesAppAttributes>?
         let prefix = liveDeliveryAttributes.id
         
@@ -331,8 +334,11 @@ public class LiveActivitiesPlugin: NSObject, FlutterPlugin, FlutterStreamHandler
                     }
                 }
             }
-            
-            let updatedStatus = LiveActivitiesAppAttributes.LiveDeliveryData(appGroupId: appGroupId)
+
+            let updatedStatus = LiveActivitiesAppAttributes.LiveDeliveryData(
+                appGroupId: appGroupId,
+                isPaused: (data["isPaused"] as? Bool) ?? false
+            )
             await activity.update(using: updatedStatus, alertConfiguration: alertConfig?.getAlertConfig())
             
             result(nil)
@@ -551,6 +557,7 @@ public class LiveActivitiesPlugin: NSObject, FlutterPlugin, FlutterStreamHandler
         
         public struct ContentState: Codable, Hashable {
             var appGroupId: String
+             var isPaused: Bool = false
         }
         
         var id = UUID()
